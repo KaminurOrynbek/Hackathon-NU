@@ -12,4 +12,7 @@ class EditPostRequest(BaseModel):
     username: Optional[str] = None
     keywords: Optional[str] = None
     text: Optional[str] = None
+
+class GeneratePostRequest(BaseModel):
+    keywords: str
     

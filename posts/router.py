@@ -1,9 +1,13 @@
-from posts.schemas import CreatePostRequest, EditPostRequest
+from posts.schemas import CreatePostRequest, EditPostRequest, GeneratePostRequest
 from fastapi import HTTPException, APIRouter
-import time
 from posts import service
+import os
+import requests
+
 
 router = APIRouter()
+
+
 
 
 @router.get('/posts')
@@ -32,3 +36,27 @@ async def delete_post(id: int):
 
     return {"message": "ok, deleted"}
     
+@router.post('/posts/generate-ad-text')
+def genenerate_ad(request: GeneratePostRequest):
+
+    token = os.environ.get("TOKEN")
+
+    headers = {
+        'Authorization': "Bearer " + token
+    }
+
+    response = requests.post('https://7583-185-48-148-173.ngrok-free.app/custom-prompt', headers=headers, json={
+        "input_text": "generate mental health support text that cheers up the user, starting with words 'Hi, I am Barbie!' based on these keywords: "  +  request.keywords
+    })
+
+    body = response.json()
+    return {
+        "text": body['output']
+    }
+    
+
+
+
+
+
+

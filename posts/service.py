@@ -1,8 +1,11 @@
 from posts.schemas import CreatePostRequest, EditPostRequest
-from database import database
+from posts.database import database
 from sqlalchemy import insert, select, update, delete
-from database import posts
+from posts.database import posts
 from fastapi import HTTPException
+
+
+
 
 async def create_post(post: CreatePostRequest):
     insert_query = insert(posts).values(
@@ -48,3 +51,5 @@ async def delete_post(id: int):
     delete_query = delete(posts).where(posts.columns.id == id)
 
     return await database.fetch_one(delete_query)
+
+
