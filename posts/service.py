@@ -23,7 +23,28 @@ async def get_post_by_id(id: int):
 
     if not post:
         raise HTTPException(status_code = 404, detail = "post is not found")
+    
+    return post
 
 
 
 async def edit_post(post: EditPostRequest, id: int):
+    post_db = await get_post_by_id(id)
+    if not post_db:
+            raise HTTPException(status_code = 404, detail = "post is not found")
+    
+    update_query = (
+        update(posts)
+        .values(post.dict(exclude_none=True))
+        .where(posts.c.id == id)
+        .returning(posts)
+    )
+
+    return await database.fetch_one(update_query)
+
+
+async def delete_post(id: int):
+     
+    delete_query = delete(posts).where(posts.columns.id == id)
+
+    return await database.fetch_one(delete_query)
