@@ -21,7 +21,7 @@ posts = Table(
     "posts",
     metadata,
     Column("id", Integer, Identity(), primary_key=True),
-    Column("username", String, unique = True),
+    Column("username", String),
     Column("keywords", String),
     Column("text", Text),
     Column("created_at", DateTime, server_default=func.now()),
